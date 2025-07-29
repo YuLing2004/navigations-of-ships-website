@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ship Viewer</title>
+  <style>
+    body {
+    background-color: black;
+    color: white;
+    font-family: monospace;
+    display: flex;
+    justify-content: space-between;
+    padding: 40px;
+    height: 100vh;
+    position: relative;
+    }
+    #left {
+      width: 100%;
+    }
+    #description {
+      margin-top: 50px;
+      color: magenta;
+      font-size: 20px;
+      line-height: 1.8;
+      left: 20px;
+    }
+
+    .back-button {
+      position: fixed;
+      bottom: 20px;
+      left: 40px;
+      color:magenta;
+      background-color: black;
+      border: none;
+      padding: 10px 16px;
+      font-size: 25px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .back-button:hover {
+      background-color: rgb(0, 0, 0);
+      color: white;
+    }
+
+  </style>
+</head>
+<body>
+    <div id="left">
+      <div id="description"></div>
+    </div>
+    <button class="back-button" onclick="location.href='main.html'">←</button>
+    <script>
+      fetch('../Text/documentation.txt')
+        .then(response => response.text())
+        .then(data => {
+          document.getElementById('description').innerText = data;
+        })
+        .catch(error => {
+          console.error('Error loading documentation.txt:', error);
+        });
+    </script>
+  </body>
+</html>

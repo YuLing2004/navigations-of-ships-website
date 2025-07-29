@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ship of Relations</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <canvas id="ocean" style="margin-top:40px;"></canvas>
+  <div id="ship-container">
+    <img src="../Pics/PNG/Boat.png" alt="Boat">
+  </div>
+  <div id="title-bar">~ Navigation of Ships ~</div>
+  <div id="footer-bar">
+    <span id="doc-link" style="float:left; cursor:pointer;">~ Documentation ~</span>
+    <span id="index-link" style="float:right; cursor:pointer;">~ index ~</span>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('ocean');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const keywords = [
+      'desire', 'absence', 'affection', 'trust', 'betrayal', 'waiting',
+      'imagination', 'withdrawal', 'closeness', 'silence', 'touch', 'hesitation',
+      'projection', 'grief', 'fantasy', 'hope', 'vulnerability', 'conflict', 'care', 'detachment'
+    ];
+
+    const particles = [];
+    for (let i = 0; i < 150; i++) {
+      particles.push({
+        text: keywords[Math.floor(Math.random() * keywords.length)],
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        dx: Math.random() * 0.5 - 0.25,
+        dy: Math.random() * 0.5 - 0.25
+      });
+    }
+
+    const ship = document.getElementById('ship-container');
+    const shipWidth = 200;
+    const shipHeight = 200;
+    let x = Math.random() * (canvas.width - shipWidth);
+    let y = Math.random() * (canvas.height - shipHeight);
+    let floating = true;
+
+    function updateShipPosition() {
+      ship.style.left = `${x}px`;
+      ship.style.top = `${y}px`;
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = 'white';
+      ctx.font = '14px monospace';
+      particles.forEach(p => {
+        const distance = Math.hypot((p.x - x - shipWidth / 2), (p.y - y - shipHeight / 2));
+        if (distance < 100) {
+          const angle = Math.atan2(p.y - (y + shipHeight / 2), p.x - (x + shipWidth / 2));
+          p.dx = Math.cos(angle) * 1.5;
+          p.dy = Math.sin(angle) * 1.5;
+        }
+
+        ctx.fillText(p.text, p.x, p.y);
+        p.x += p.dx;
+        p.y += p.dy;
+
+        if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+      });
+      requestAnimationFrame(draw);
+    }
+    draw();
+
+    setInterval(() => {
+      if (floating) {
+        x += Math.random() * 4 - 2;
+        y += Math.random() * 4 - 2;
+        x = Math.max(0, Math.min(canvas.width - shipWidth, x));
+        y = Math.max(0, Math.min(canvas.height - shipHeight, y));
+        updateShipPosition();
+      }
+    }, 100);
+
+    document.addEventListener('mousemove', (e) => {
+      const distance = Math.hypot(e.clientX - (x + shipWidth / 2), e.clientY - (y + shipHeight / 2));
+      if (distance < 150) {
+        floating = false;
+        ship.classList.add('rocking');
+      } else {
+        floating = true;
+        ship.classList.remove('rocking');
+      }
+    });
+
+    ship.addEventListener('click', () => {
+      ship.style.opacity = '0';
+      ship.style.transform = 'scale(0.8) rotate(20deg)';
+      setTimeout(() => {
+        window.location.href = 'play.html';
+      }, 600);
+    });
+
+    document.getElementById('doc-link').onclick = function() {
+      window.location.href = 'documentation.html';
+    };
+    document.getElementById('index-link').onclick = function() {
+      window.location.href = 'index.html';
+    };
+
+    updateShipPosition();
+  </script>
+</body>
+</html>

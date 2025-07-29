@@ -1,0 +1,90 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: black;
+  font-family: monospace;
+  overflow: hidden;
+}
+
+/* Canvas that holds the flowing keywords */
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+
+/* Optional reusable image styles */
+img {
+  display: block;
+}
+#ship-container {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  z-index: 2;
+  pointer-events: auto;
+  transition: transform 0.3s ease, opacity 0.5s ease;
+}
+
+#ship-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+#ship-container.rocking img {
+  animation: rock 0.6s infinite ease-in-out alternate;
+}
+
+@keyframes rock {
+  0% { transform: rotate(-8deg); }
+  100% { transform: rotate(8deg); }
+}
+
+#title-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 30px;
+  width: 100vw;
+  background: black;
+  color: #ff15c8;
+  font-family: monospace;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  z-index: 12;
+}
+#title-bar a {
+  color: #ff15c8;
+  text-decoration: none;
+}
+#title-bar a:hover {
+  text-decoration: underline;
+}
+
+#footer-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  height: 30px;
+  background: #000;
+  color: #ff15c8;
+  font-size: 18px;
+  line-height: 20px;
+  z-index: 10;
+  padding: 0 20px;
+  box-sizing: border-box;
+  user-select: none;
+}
+#doc-link, #index-link {
+  height: 20px;
+  display: inline-block;
+  line-height: 20px;
+}
